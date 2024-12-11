@@ -15,12 +15,15 @@ ext {
     junitVersion = '5.11.3'
 }
 
-sourceCompatibility = '18'
-targetCompatibility = '18'
+sourceCompatibility = '17'
+targetCompatibility = '17'
 
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
+task installBrowsers(type: Exec) {
+    description = 'Install Playwright supported browsers'
+    commandLine 'npx', 'playwright', 'install'
 }
+
+test.dependsOn installBrowsers
 
 dependencies {
     implementation('com.microsoft.playwright:playwright:1.49.0')
@@ -43,6 +46,12 @@ dependencies {
     implementation 'ch.qos.logback:logback-classic:1.4.11'
 }
 
+task installPlaywrightDeps(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.microsoft.playwright.CLI'
+    args = ['install-deps']
+}
+
 test {
     useJUnitPlatform()
 }
@@ -62,6 +71,13 @@ tasks.register('playwrighttrace', JavaExec) {
     mainClass = 'com.microsoft.playwright.CLI'
     args 'show-trace'
     args 'trace.zip'
+}
+
+task printJavaVersion {
+    doLast {
+        println "Java version used by Gradle: ${System.getProperty('java.version')}"
+        println "Java home: ${System.getProperty('java.home')}"
+    }
 }
 
 allure {
