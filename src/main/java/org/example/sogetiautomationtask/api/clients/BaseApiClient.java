@@ -1,19 +1,19 @@
-package org.example.sogetiautomationtask.api;
+package org.example.sogetiautomationtask.api.clients;
 
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.example.sogetiautomationtask.utils.ConfigReader;
+import org.example.sogetiautomationtask.ui.utils.ConfigReader;
 
 public class BaseApiClient {
-    public BaseApiClient(){
-        RestAssured.baseURI= ConfigReader.get("api.baseUrl");
+    public BaseApiClient() {
+        RestAssured.baseURI = ConfigReader.get("api.baseUrl");
         RestAssured.requestSpecification = RestAssured.given()
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json");
     }
 
-    protected Response sendGet(String endpoint){
+    protected Response sendGet(String endpoint) {
         return RestAssured.get(endpoint).then().extract().response();
     }
 

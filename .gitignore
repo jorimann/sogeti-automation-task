@@ -9,12 +9,17 @@ build/
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
+.idea/
 *.iws
 *.iml
 *.ipr
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+demo/
+gradle/
+gradlew
+gradlew.bat
 
 ### Eclipse ###
 .apt_generated

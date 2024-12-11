@@ -1,10 +1,16 @@
-package org.example.sogetiautomationtask.pages;
+package org.example.sogetiautomationtask.ui.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import org.example.sogetiautomationtask.dto.Message;
-import org.example.sogetiautomationtask.utils.MessageFactory;
+import com.microsoft.playwright.options.WaitForSelectorState;
+import io.qameta.allure.Step;
+import org.example.sogetiautomationtask.ui.models.Message;
+import org.example.sogetiautomationtask.ui.utils.ConfigReader;
+import org.example.sogetiautomationtask.ui.utils.MessageFactory;
+import org.example.sogetiautomationtask.ui.utils.PurposeOfContact;
+
+import static org.example.sogetiautomationtask.ui.components.PageUtils.waitForElement;
 
 public class ContactUsPage extends BasePage {
 
@@ -12,20 +18,22 @@ public class ContactUsPage extends BasePage {
         super(page);
     }
 
+    @Step
     public ContactUsPage populateMessageData() {
         Message message = MessageFactory.getMessage();
-        System.out.println(message);
-        page.getByLabel("Purpose of contact *").selectOption(message.purposeOfContact());
-//        page.getByPlaceholder("Enter other Purpose of contact").click();
-//        page.getByPlaceholder("Enter other Purpose of contact").fill("test");
+        Locator dynamicElement = page.getByLabel("Purpose of contact *");
+        dynamicElement.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED).setTimeout(ConfigReader.getInt("ui.wait.element")));
+        dynamicElement.selectOption(message.purposeOfContact().getName());
+
+        if (message.purposeOfContact() == PurposeOfContact.OTHER_PURPOSE) {
+            page.getByPlaceholder("Enter other Purpose of contact").fill(message.otherPurposeOfContact());
+        }
         page.getByPlaceholder("First name").fill(message.firstName());
-        page.getByPlaceholder("Last name").click();
         page.getByPlaceholder("Last name").fill(message.lastName());
-        page.getByPlaceholder("Job Title").click();
         page.getByPlaceholder("Job Title").fill(message.jobTitle());
-        page.getByLabel("Position/Level", new Page.GetByLabelOptions().setExact(true)).selectOption("Assistant/secretary");
+        page.getByLabel("Position/Level", new Page.GetByLabelOptions().setExact(true)).selectOption(message.positionLevel().getName());
         page.getByPlaceholder("E-mail address").fill(message.email());
-        page.getByLabel("Country *").selectOption(message.country());
+        page.getByLabel("Country *").selectOption(message.country().getName());
         page.getByPlaceholder("Phone number").click();
         waitForElement(page.getByPlaceholder("Phone number")).fill(message.phoneNumber());
         page.getByPlaceholder("Company").fill(message.company());
@@ -33,26 +41,33 @@ public class ContactUsPage extends BasePage {
         return this;
     }
 
-    public ContactUsPage confirmCollectingData(){
-        page.getByLabel("I agree to Sogeti collecting").check();
+    @Step
+    public ContactUsPage confirmCollectingData() {
+        Locator checkbox = page.getByLabel("I agree to Sogeti collecting");
+        if (!checkbox.isChecked()) {
+            checkbox.check();
+        }
         return this;
     }
 
-    public ContactUsPage sendMessage(){
+    @Step
+    public ContactUsPage sendMessage() {
         Locator slider = page.locator("#slider");
 
         int x = (int) (slider.boundingBox().x + 10);
         int y = (int) slider.boundingBox().y;
-
+        int sliderWidth = (int) slider.boundingBox().width;
+        int sliderFieldWidth = (int) page.locator("#button-background").boundingBox().width;
         slider.hover();
         page.mouse().down();
         page.mouse().move(x, y);
-        page.mouse().move(x + 210, y);
+        page.mouse().move(x + sliderFieldWidth - sliderWidth / 2, y);
+
         page.mouse().up();
         return this;
     }
 
-    public String getMessageAfterSending (){
+    public String getMessageAfterSending() {
         return page.getByRole(AriaRole.ALERT).innerText();
     }
 }

@@ -1,17 +1,22 @@
-package org.example.sogetiautomationtask.utils;
+package org.example.sogetiautomationtask.ui.utils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
 public class ConfigReader {
-    private static Properties properties = new Properties();
+    private static final Logger logger = LoggerFactory.getLogger(ConfigReader.class);
+
+    private static final Properties properties = new Properties();
 
     static {
         try (FileInputStream fis = new FileInputStream("config.properties")) {
             properties.load(fis);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
             throw new RuntimeException("Could not load config.properties");
         }
     }

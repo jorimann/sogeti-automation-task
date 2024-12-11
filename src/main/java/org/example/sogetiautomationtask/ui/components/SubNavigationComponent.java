@@ -1,21 +1,16 @@
-package org.example.sogetiautomationtask.components;
+package org.example.sogetiautomationtask.ui.components;
 
-import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
 public class SubNavigationComponent {
 
-    private Page page;
+    private final Page page;
 
-    private Locator subNavigation;
-
-    public SubNavigationComponent(Page page){
+    public SubNavigationComponent(Page page) {
         this.page = page;
-        subNavigation = page.locator(".sub-navigation ");
     }
 
-    public String getSubNavigationText(){
-        return subNavigation.innerText();
+    public String getSubNavigationText() {
+        return page.locator(".sub-navigation ").innerText();
     }
-
 }

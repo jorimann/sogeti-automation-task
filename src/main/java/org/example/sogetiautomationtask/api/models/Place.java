@@ -1,8 +1,7 @@
-package org.example.sogetiautomationtask.api;
+package org.example.sogetiautomationtask.api.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.Lombok;
 
 @Data
 public class Place {

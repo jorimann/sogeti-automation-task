@@ -1,4 +1,4 @@
-package org.example.sogetiautomationtask.dto;
+package org.example.sogetiautomationtask.ui.utils;
 
 public enum PositionLevel {
     ASSISTANT_SECRETARY("Assistant/secretary"),
@@ -14,11 +14,12 @@ public enum PositionLevel {
         this.name = name;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
+
     @Override
-    public String toString(){
+    public String toString() {
         return name;
     }
 }

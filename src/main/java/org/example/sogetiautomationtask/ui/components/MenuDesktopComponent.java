@@ -1,139 +1,83 @@
-package org.example.sogetiautomationtask.components;
+package org.example.sogetiautomationtask.ui.components;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import com.microsoft.playwright.options.BoundingBox;
-import com.microsoft.playwright.options.LoadState;
-import org.example.sogetiautomationtask.pages.*;
-
-import java.util.regex.Pattern;
+import io.qameta.allure.Step;
+import org.example.sogetiautomationtask.ui.pages.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MenuDesktopComponent {
-    private Page page;
+    private static final Logger logger = LoggerFactory.getLogger(MenuDesktopComponent.class);
 
-    private Locator services;
-    private Locator qualityEngineering;
-    private Locator automation;
+    private final Page page;
 
-    public MenuDesktopComponent(Page page){
+    private final Locator servicesMenuItem;
+    private final Locator qualityEngineeringMenuItem;
+    private final Locator automationMenuItem;
+
+    public MenuDesktopComponent(Page page) {
         this.page = page;
-        services = page.getByLabel("Services menu");
-        qualityEngineering = page.getByLabel("Quality Engineering menu");
-        automation = page.getByLabel("Automation menu");
+        servicesMenuItem = page.getByLabel("Services menu", new Page.GetByLabelOptions().setExact(true));
+        qualityEngineeringMenuItem = page.getByLabel("Quality Engineering menu", new Page.GetByLabelOptions().setExact(true));
+        automationMenuItem = page.getByLabel("Automation menu", new Page.GetByLabelOptions().setExact(true));
     }
 
-    public QualityEngineeringPage invokeQualityEngineeringMenuItem(){
-        services.hover();
-        qualityEngineering.click();
+    @Step
+    public QualityEngineeringPage goToQualityEngineeringPage() {
+        hoverServiceMenuItem();
+        qualityEngineeringMenuItem.click();
+        PageUtils.waitForPageLoad(page);
         return new QualityEngineeringPage(page);
     }
 
-    public void hoverServiceElement(){
-        // Максимальное время ожидания в миллисекундах
-        int timeout = 5000; // 5 секунд
-        int pollInterval = 200; // Интервал между проверками (200 мс)
-
-        // Время начала ожидания
-        long startTime = System.currentTimeMillis();
-
-        // Цикл ожидания
-        while (System.currentTimeMillis() - startTime < timeout) {
-            if (services.isVisible() && services.isEnabled()) {
-                System.out.println("Элемент доступен для клика");
-                break; // Прерываем цикл после успешного клика
-            }
-
-            // Ждём перед следующей проверкой
-            try {
-                Thread.sleep(pollInterval);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        services.hover();
+    @Step
+    public void hoverServiceMenuItem() {
+        servicesMenuItem.hover();
     }
 
-    public String getClassServiceMenu(){
-
-
-
-
+    public String getClassServiceMenu() {
         Locator serviceMenu = page.getByLabel("Services menu");
-//        Locator parentServiceMenu = page.getByRole(AriaRole.LISTITEM).filter(new Locator.FilterOptions().setHas(serviceMenu));
-        Locator parentServiceMenu = page.locator("#menu-main-desktop > li:nth-child(1)");
-//        parentServiceMenu.hover(new Locator.HoverOptions().setTimeout(1000).setForce(true).setTrial(true));
-
-
-        parentServiceMenu.hover();
-        System.out.println(parentServiceMenu.getAttribute("class"));
-
-
-        // Ждем, чтобы проверить логи
-
-        System.out.println(parentServiceMenu.getAttribute("class"));
-        System.out.println(parentServiceMenu.getAttribute("aria-label"));
+        Locator parentServiceMenu = page.getByRole(AriaRole.LISTITEM).filter(new Locator.FilterOptions().setHas(serviceMenu));
         return parentServiceMenu.getAttribute("class");
     }
 
-    public AutomationPage invokeAutomationMenuItem(){
-        services.hover();
-        automation.click();
+    @Step
+    public AutomationPage goToAutomationMenuItem() {
+        hoverServiceMenuItem();
+        automationMenuItem.click();
+        PageUtils.waitForPageLoad(page);
         return new AutomationPage(page);
     }
 
-    public ContactUsPage navigateContuctUs(){
-//        Locator contactUs = page.getByLabel("Contact us");
-        Locator contactUs = waitForElement(page.locator("nav.header-nav ul li.icon-investors a[href=\"/contact-us/\"]"));
+    @Step
+    public ContactUsPage goToContactUs() {
+        Locator contactUs = page.locator("nav.header-nav ul li.icon-investors a[href=\"/contact-us/\"]");
         contactUs.click();
+        PageUtils.waitForPageLoad(page);
         return new ContactUsPage(page);
     }
-    public BasePage openGlobalMenu(){
-//        Locator global = waitForElement(page.getByText(Pattern.compile("Global | EN")));
-        Locator global = waitForElement(page.getByLabel("World Icon"));
-        global.click();
+
+    @Step
+    public BasePage openGlobalMenu() {
+        Locator globalMenuIcon = page.getByLabel("World Icon");
+        globalMenuIcon.click();
         return new HomePage(page);
     }
 
-    public BasePage navigateToSubsidiary(String value, String address){
+    @Step
+    public HomePage goToSubsidiarySite(String value) {
         openGlobalMenu();
-        Locator menu = page.getByRole(AriaRole.NAVIGATION, new Page.GetByRoleOptions().setName("Location Search"));
-        Locator country = menu.getByText(value);
-
-        country.click();
-//        page.waitForLoadState();
-//        page.route("**", route -> route.abort());
-//        page.waitForLoadState(LoadState.NETWORKIDLE, new Page.WaitForLoadStateOptions().setTimeout(10000));
-        System.out.println(page.url());
+        Locator countryLink = page.getByRole(AriaRole.NAVIGATION, new Page.GetByRoleOptions().setName("Location Search")).getByText(value);
+        countryLink.click();
         page.waitForLoadState();
-        System.out.println(page.url());
-        page.waitForURL(address); // Ждём, пока URL изменится
-        System.out.println("Current URL: " + page.url());
-        return new BasePage(page);
+//        PageUtils.waitForPageLoad(page);
+        return new HomePage(page);
     }
 
-    private Locator waitForElement(Locator locator){
-        // Время начала ожидания
-        long startTime = System.currentTimeMillis();
-        // Максимальное время ожидания в миллисекундах
-        int timeout = 5000; // 5 секунд
-        int pollInterval = 200; // Интервал между проверками (200 мс)
-
-        // Цикл ожидания
-        while (System.currentTimeMillis() - startTime < timeout) {
-            if (locator.isVisible() && locator.isEnabled()) {
-                System.out.println("Элемент доступен для клика");
-                return locator;
-            } else {
-                System.out.println("элемент пока недоступен");
-            }
-            // Ждём перед следующей проверкой
-            try {
-                Thread.sleep(pollInterval);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        return locator;
+    public String getClassQualityEngineeringMenu() {
+        Locator locator = page.getByRole(AriaRole.LISTITEM, new Page.GetByRoleOptions().setName("Quality Engineering"));
+        return locator.getAttribute("class");
     }
 }

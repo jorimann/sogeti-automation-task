@@ -1,4 +1,4 @@
-package org.example.sogetiautomationtask.dto;
+package org.example.sogetiautomationtask.ui.utils;
 
 public enum PurposeOfContact {
     PRIVACY("Privacy"),
@@ -14,11 +14,12 @@ public enum PurposeOfContact {
         this.name = name;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
+
     @Override
-    public String toString(){
+    public String toString() {
         return name;
     }
 }

@@ -1,10 +1,8 @@
-package org.example.sogetiautomationtask.utils;
+package org.example.sogetiautomationtask.ui.utils;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType.LaunchOptions;
 import com.microsoft.playwright.Playwright;
-
-import static org.example.sogetiautomationtask.utils.ConfigurationManager.config;
 
 public enum BrowserFactory {
 
@@ -29,8 +27,9 @@ public enum BrowserFactory {
 
     public LaunchOptions options() {
         return new LaunchOptions()
-                .setHeadless(config().headless())
-                .setSlowMo(config().slowMotion());
+                .setHeadless(ConfigReader.getBoolean("ui.headless"))
+                .setSlowMo(ConfigReader.getInt("ui.slow.motion"));
+//                .setArgs(Arrays.stream(new String[] { "--start-maximized" }).toList());
     }
 
     public abstract Browser createInstance(final Playwright playwright);

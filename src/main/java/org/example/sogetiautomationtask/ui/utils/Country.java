@@ -1,4 +1,4 @@
-package org.example.sogetiautomationtask.dto;
+package org.example.sogetiautomationtask.ui.utils;
 
 public enum Country {
     ALBANIA("Albania"),
@@ -10,11 +10,12 @@ public enum Country {
         this.name = name;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
+
     @Override
-    public String toString(){
+    public String toString() {
         return name;
     }
 }

@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'io.qameta.allure' version '2.12.0'
+    id("io.freefair.lombok") version "8.11"
 }
 
 group 'org.example'
@@ -10,7 +12,7 @@ repositories {
 }
 
 ext {
-    junitVersion = '5.10.2'
+    junitVersion = '5.11.3'
 }
 
 sourceCompatibility = '18'
@@ -21,12 +23,47 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-    testImplementation('com.microsoft.playwright:playwright:1.45.1')
+    implementation('com.microsoft.playwright:playwright:1.49.0')
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+
+    implementation 'org.aeonbits.owner:owner:1.0.12'
+    implementation 'com.github.javafaker:javafaker:1.0.2'
+
+    implementation 'io.qameta.allure:allure-junit5:2.29.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.11.3'
+
+    implementation 'io.rest-assured:rest-assured:5.5.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+
+    implementation 'org.slf4j:slf4j-api:2.0.16'
+    implementation 'ch.qos.logback:logback-classic:1.4.11'
 }
 
 test {
     useJUnitPlatform()
+}
+
+//task to genererate code
+tasks.register('playwrightcodegen', JavaExec) {
+    classpath sourceSets.test.runtimeClasspath
+    mainClass = 'com.microsoft.playwright.CLI'
+    args 'codegen'
+    args 'www.sogeti.com'
+    args 'firefox'
+}
+
+//task to play recorded trace
+tasks.register('playwrighttrace', JavaExec) {
+    classpath sourceSets.test.runtimeClasspath
+    mainClass = 'com.microsoft.playwright.CLI'
+    args 'show-trace'
+    args 'trace.zip'
+}
+
+allure {
+    version = '2.32.0'
 }

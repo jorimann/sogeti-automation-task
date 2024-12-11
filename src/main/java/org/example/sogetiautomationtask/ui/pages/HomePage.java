@@ -1,12 +1,10 @@
-package org.example.sogetiautomationtask.pages;
+package org.example.sogetiautomationtask.ui.pages;
 
 import com.microsoft.playwright.Page;
 
 public class HomePage extends BasePage {
-    Page page;
-    public HomePage(Page page){
+
+    public HomePage(Page page) {
         super(page);
     }
-
-
 }
