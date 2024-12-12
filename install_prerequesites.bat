@@ -6,14 +6,14 @@ set "PATH=%JAVA_HOME%\bin;%GRADLE_HOME%\bin;%ProgramFiles%\Git\bin;%PATH%"
 
 REM Step 2: Install Git
 echo Installing Git...
-powershell -Command "Invoke-WebRequest -Uri https://github.com/git-for-windows/git/releases/latest/download/Git-2.42.0-64-bit.exe -OutFile git-installer.exe"
+powershell -Command "Invoke-WebRequest -Uri https://github.com/git-for-windows/git/releases/download/v2.47.1.windows.1/Git-2.47.1-64-bit.exe -OutFile git-installer.exe"
 start /wait git-installer.exe /VERYSILENT /NORESTART
 del git-installer.exe
 echo Git installation completed.
 
 REM Step 3: Install OpenJDK 17
 echo Installing OpenJDK 17...
-powershell -Command "Invoke-WebRequest -Uri https://download.java.net/java/GA/jdk17/0d1cfde4252546c6931946de8db48ee2/36/GPL/openjdk-17_windows-x64_bin.zip -OutFile openjdk17.zip"
+powershell -Command "Invoke-WebRequest -Uri https://builds.openlogic.com/downloadJDK/openlogic-openjdk/17.0.13+11/openlogic-openjdk-17.0.13+11-windows-x64.zip -OutFile openjdk17.zip"
 mkdir C:\OpenJDK
 powershell -Command "Expand-Archive -Path openjdk17.zip -DestinationPath C:\OpenJDK"
 move C:\OpenJDK\jdk-17* C:\OpenJDK\jdk-17
