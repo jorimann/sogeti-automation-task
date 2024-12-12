@@ -1,6 +1,7 @@
 package org.example.sogetiautomationtask.ui.pages;
 
 import com.microsoft.playwright.Page;
+import io.qameta.allure.Step;
 import org.example.sogetiautomationtask.ui.components.MenuDesktopComponent;
 import org.example.sogetiautomationtask.ui.components.SubNavigationComponent;
 import org.example.sogetiautomationtask.ui.utils.ConfigReader;
@@ -37,7 +38,8 @@ public class BasePage {
         return page.title();
     }
 
+    @Step
     public void waitForUrl(String expectedUrl) {
-        page.waitForURL(url -> url.equals(expectedUrl), new Page.WaitForURLOptions().setTimeout(ConfigReader.getInt("ui.timeout.page.load")));
+        page.waitForURL(url -> url.equals(expectedUrl), new Page.WaitForURLOptions().setTimeout(ConfigReader.getInt("ui.wait.for.new.page")));
     }
 }

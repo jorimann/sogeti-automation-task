@@ -19,7 +19,7 @@ public class NavigationTests extends BaseTest {
     private static final String EXPECTED_QUALITY_ENGINEERING_BANNER_TEXT = "Quality Engineering";
 
     @Test
-    @DisplayName("Verify Automation link should be available as submenu item of Service header menu")
+    @DisplayName("[Expected to fail] Verify Automation link should be available as submenu item of Service header menu")
     void tc1ShouldAutomationLinkAvailableFromServiceHeaderMenu() {
         AutomationPage automationPage = homePage.getMenu().goToAutomationMenuItem();
 
@@ -27,11 +27,11 @@ public class NavigationTests extends BaseTest {
                 "Automation text is not present on Banner");
 
         assertTrue(automationPage.getSubNavigation().getSubNavigationText().contains(EXPECTED_AUTOMATION_BANNER_TEXT),
-                "Subnavigation does not contain Automation item");
+                "Sub-navigation does not contain Automation item");
     }
 
     @Test
-    @DisplayName("Verify Quality Engineering link should be available as submenu item of Service header menu")
+    @DisplayName("[Expected to fail] Verify Quality Engineering link should be available as submenu item of Service header menu")
     void tc1bShouldQualityEngineeringLinkAvailableFromServiceHeaderMenu() {
         //my assumption that selected menu item has active attribute in class name
         String SUPPOSED_ACTIVE_ATTRIBUTE = "active";
@@ -52,7 +52,7 @@ public class NavigationTests extends BaseTest {
     }
 
     @Test
-    @DisplayName("Verify User can send Message from Automation Page")
+    @DisplayName("[Expected to fail] Verify User can send Message from Automation Page")
     void tc2ShouldSendMessageViaContactUsFormFromAutomationPage() {
         homePage.getMenu().goToAutomationMenuItem();
     }
@@ -62,7 +62,7 @@ public class NavigationTests extends BaseTest {
     void tc2bShouldSendMessageViaContactUsFormFromAutomationPage() {
         ContactUsPage contactUsPage = homePage.getMenu().goToContactUs();
         contactUsPage.populateMessageData();
-//TODO:        contactUsPage.confirmCollectingData();
+        contactUsPage.confirmCollectingData();
         contactUsPage.sendMessage();
         assertTrue(contactUsPage.getMessageAfterSending().contains(EXPECTED_MESSAGE_AFTER_SUBMISSION),
                 "Page does not contain expected text after sending message");
@@ -74,6 +74,6 @@ public class NavigationTests extends BaseTest {
     void tc3ShouldCountrySpecificSitesAvailable(String country, String url) {
         homePage.getMenu().goToSubsidiarySite(country);
         homePage.waitForUrl(url);
-        assertEquals(url, homePage.getUrl(), "link leads to unexpected site");
+        assertEquals(url, homePage.getUrl(), String.format("Expected to navigate to '%s', but landed on '%s'.", url, homePage.getUrl()));
     }
 }

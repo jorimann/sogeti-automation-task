@@ -3,14 +3,11 @@ package org.example.sogetiautomationtask.ui.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
+import org.example.sogetiautomationtask.ui.components.ExtendedLocator;
 import org.example.sogetiautomationtask.ui.models.Message;
-import org.example.sogetiautomationtask.ui.utils.ConfigReader;
 import org.example.sogetiautomationtask.ui.utils.MessageFactory;
 import org.example.sogetiautomationtask.ui.utils.PurposeOfContact;
-
-import static org.example.sogetiautomationtask.ui.components.PageUtils.waitForElement;
 
 public class ContactUsPage extends BasePage {
 
@@ -21,9 +18,9 @@ public class ContactUsPage extends BasePage {
     @Step
     public ContactUsPage populateMessageData() {
         Message message = MessageFactory.getMessage();
-        Locator dynamicElement = page.getByLabel("Purpose of contact *");
-        dynamicElement.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED).setTimeout(ConfigReader.getInt("ui.wait.element")));
-        dynamicElement.selectOption(message.purposeOfContact().getName());
+
+        new ExtendedLocator(page.getByLabel("Purpose of contact *"))
+                .waitForElement().selectOption(message.purposeOfContact().getName());
 
         if (message.purposeOfContact() == PurposeOfContact.OTHER_PURPOSE) {
             page.getByPlaceholder("Enter other Purpose of contact").fill(message.otherPurposeOfContact());
@@ -35,7 +32,8 @@ public class ContactUsPage extends BasePage {
         page.getByPlaceholder("E-mail address").fill(message.email());
         page.getByLabel("Country *").selectOption(message.country().getName());
         page.getByPlaceholder("Phone number").click();
-        waitForElement(page.getByPlaceholder("Phone number")).fill(message.phoneNumber());
+        new ExtendedLocator(page.getByPlaceholder("Phone number"))
+                .waitForElement().fill(message.phoneNumber());
         page.getByPlaceholder("Company").fill(message.company());
         page.getByPlaceholder("Your Message").fill(message.message());
         return this;
@@ -62,7 +60,6 @@ public class ContactUsPage extends BasePage {
         page.mouse().down();
         page.mouse().move(x, y);
         page.mouse().move(x + sliderFieldWidth - sliderWidth / 2, y);
-
         page.mouse().up();
         return this;
     }

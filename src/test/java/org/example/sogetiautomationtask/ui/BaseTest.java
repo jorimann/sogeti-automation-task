@@ -1,9 +1,6 @@
 package org.example.sogetiautomationtask.ui;
 
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.BrowserContext;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.Cookie;
 import org.example.sogetiautomationtask.ui.components.PageUtils;
 import org.example.sogetiautomationtask.ui.pages.HomePage;
@@ -14,6 +11,7 @@ import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Paths;
 import java.util.Collections;
 
 
@@ -47,17 +45,20 @@ public abstract class BaseTest {
     }
 
     @BeforeEach
-    void setupContextAndNavigateToHomePage() throws InterruptedException {
-        context = browser.newContext(new Browser.NewContextOptions()
-//                .setViewportSize(ConfigReader.getInt("ui.viewport.width")
-//                        , ConfigReader.getInt("ui.viewport.height"))
-                .setDeviceScaleFactor(1));
+    void setupContextAndNavigateToHomePage() {
+        Browser.NewContextOptions options = new Browser.NewContextOptions()
+                .setViewportSize(ConfigReader.getInt("ui.viewport.width"), ConfigReader.getInt("ui.viewport.height"))
+                .setDeviceScaleFactor(1);
+
+        context = browser.newContext(options);
 
         context.setDefaultTimeout(ConfigReader.getInt("ui.timeout"));
 
-//                context.tracing().start(new Tracing.StartOptions()
-//                .setScreenshots(true)
-//                .setSnapshots(true));
+        if (ConfigReader.getBoolean("ui.tracing.enabled")) {
+            context.tracing().start(new Tracing.StartOptions()
+                    .setScreenshots(true)
+                    .setSnapshots(true));
+        }
 
         setupCookie();
         page = context.newPage();
@@ -71,8 +72,10 @@ public abstract class BaseTest {
     @AfterEach
     void closeContext() {
 
-//        context.tracing().stop(new Tracing.StopOptions()
-//                .setPath(Paths.get("trace2.zip")));
+        if (ConfigReader.getBoolean("ui.tracing.enabled")) {
+            context.tracing().stop(new Tracing.StopOptions()
+                    .setPath(Paths.get("trace2.zip")));
+        }
 
         if (page != null) {
             byte[] screenshot = page.screenshot(new Page.ScreenshotOptions().setFullPage(true));

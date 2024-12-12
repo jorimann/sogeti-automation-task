@@ -1,35 +1,35 @@
-# Practical task for Sogeti
+# Practical Task for Sogeti
 
 This repository demonstrates an automated testing framework as part of a practical task for Sogeti.
 
 ## Key Features
 - **Page-Object Model (POM)** structure for better maintainability and scalability
-- **Support for UI and API tests**:
+- **Support for both UI and API tests**:
    - UI tests are located in 'ui' package.
    - API tests are located in 'api' package.
 - **Comprehensive test reports** using Allure.
 - **Web UI automation** using Playwright.
-- **API Testing** implemented with RestAssured
+- **API Testing** implemented with RestAssured.
 - **Parallel test execution** with JUnit5 built-in support.
 
 ## Planned Improvements
-- Implement a unified strategy for managing locators.
+Below are the planned improvements that will further enhance the framework’s capabilities:
+- Implement a unified strategy for managing locators (baed on role and dynamical waiting for state).
 - Enhance handling of page load and element availability.
-- Add support for multiple environments (e.g., dev, stage).
+- Add configurable support for multiple environments such as development (dev) and staging (stage)
 - Enable configuration for different browsers and devices.
-- Optimize the framework for mobile and tablet testing.
-
-# Prerequisites:
-Before running the project, ensure the following tools are installed on your system:
-- **Git**
-- **Curl**
-- **Homebrew** (for macOS users)
-- **Java 17**
-- **Gradle**
+- Optimize the framework for screens on mobile phones and tablets.
+- Investigate approaches to block/stub some network request to speed up pages load and make tests more stable.
 
 ---
 
 ## Installation and Execution (macOS/Unix)
+
+### Prerequisites:
+Before running the project, ensure the following tools are installed on your system:
+- **Git**
+- **Curl** (only for package installation)
+- **Homebrew** (only for package installation)
 1. Open a terminal and navigate to the desired working directory.
 2. Clone the repository:
    ```bash
@@ -53,6 +53,19 @@ Before running the project, ensure the following tools are installed on your sys
    ```bash
    gradle test allureServe --continue -Dorg.gradle.java.home=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
 
+---
+
+## Installation and Execution (Windows)
+1. Download and copy _win_install_prerequesites.bat_ file to work directory. It will install git, gradle, java 17 and downloads repository
+2. Open a terminal with Administrator rights and navigate to the working directory.
+3. Execute _win_install_prerequesites.bat_
+4. After installation, navigate to the _sogeti_automation_task_ folder:
+   ```bash
+   cd sogeti-automation-task
+5. Run the project:
+   ```bash
+   c:\Gradle\gradle\bin\gradle test allureServe --continue
+   
 ## Additional Resources
 * [Gradle Documentation](https://gradle.org/docs)
 * [Allure Framework](https://docs.qameta.io/allure/)
