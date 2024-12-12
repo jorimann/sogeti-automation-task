@@ -68,8 +68,8 @@ public class MenuDesktopComponent {
     @Step
     public HomePage goToSubsidiarySite(String value) {
         openGlobalMenu();
-        Locator countryLink = page.getByRole(AriaRole.NAVIGATION, new Page.GetByRoleOptions().setName("Location Search")).getByText(value);
-        countryLink.click();
+        new ExtendedLocator(page.getByRole(AriaRole.NAVIGATION, new Page.GetByRoleOptions().setName("Location Search")).getByText(value))
+                .waitForElement().click();
         page.waitForLoadState();
         return new HomePage(page);
     }

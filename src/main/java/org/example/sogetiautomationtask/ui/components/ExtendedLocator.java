@@ -12,11 +12,11 @@ public class ExtendedLocator {
 
     public Locator waitForElement()  {
         try {
-            Thread.sleep(200);
+            Thread.sleep(400);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        locator.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED).setTimeout(ConfigReader.getInt("ui.wait.element")));
+        locator.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(ConfigReader.getInt("ui.wait.element")));
         return locator;
     }
 }
