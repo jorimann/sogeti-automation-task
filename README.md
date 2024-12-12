@@ -39,7 +39,7 @@ Before running the project, ensure the following tools are installed on your sys
    cd sogeti-automation-task
 4. Install Homebrew (if not already installed):
    ```bash
-   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 5. Install Java 17 using Homebrew (if not already installed):
    ```bash
    brew install openjdk@17

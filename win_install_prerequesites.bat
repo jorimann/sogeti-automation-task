@@ -29,28 +29,10 @@ move C:\Gradle\gradle-* C:\Gradle\gradle
 del gradle.zip
 echo Gradle installation completed.
 
-REM Verify installations
-echo Verifying Git version...
-git --version
-if %errorlevel% neq 0 (
-    echo Git is not installed correctly. Exiting...
-    exit /b 1
-)
-
-echo Verifying Java version...
-"%JAVA_HOME%\bin\java.exe" -version
-if %errorlevel% neq 0 (
-    echo Java is not installed correctly. Exiting...
-    exit /b 1
-)
-
-echo Verifying Gradle version...
-gradle -v
-if %errorlevel% neq 0 (
-    echo Gradle is not installed correctly. Exiting...
-    exit /b 1
-)
+REM Step 5: Download the repository from GitHub
+echo Cloning the repository...
+git clone https://github.com/jorimann/sogeti-automation-task
 
 REM Completion message
-echo Setup completed successfully.
+echo Setup completed.
 pause

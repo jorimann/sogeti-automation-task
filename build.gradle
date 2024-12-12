@@ -23,8 +23,6 @@ task installBrowsers(type: Exec) {
     commandLine 'npx', 'playwright', 'install'
 }
 
-test.dependsOn installBrowsers
-
 dependencies {
     implementation('com.microsoft.playwright:playwright:1.49.0')
 
