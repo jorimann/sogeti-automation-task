@@ -3,8 +3,10 @@ package org.example.sogetiautomationtask.ui.components;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import org.example.sogetiautomationtask.ui.pages.*;
+import org.example.sogetiautomationtask.ui.utils.ConfigReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,8 +63,12 @@ public class MenuDesktopComponent {
 
     @Step
     public BasePage openGlobalMenu() {
-        Locator globalMenuIcon = page.getByLabel("World Icon");
-        globalMenuIcon.click();
+        Locator dynamicElement = page.getByLabel("World Icon");
+        dynamicElement.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED).setTimeout(ConfigReader.getInt("ui.wait.element")));
+        dynamicElement.click();
+
+//        Locator globalMenuIcon = page.getByLabel("World Icon");
+//        globalMenuIcon.click();
         return new HomePage(page);
     }
 
