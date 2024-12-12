@@ -16,7 +16,7 @@ echo Installing OpenJDK 17...
 powershell -Command "Invoke-WebRequest -Uri https://builds.openlogic.com/downloadJDK/openlogic-openjdk/17.0.13+11/openlogic-openjdk-17.0.13+11-windows-x64.zip -OutFile openjdk17.zip"
 mkdir C:\OpenJDK
 powershell -Command "Expand-Archive -Path openjdk17.zip -DestinationPath C:\OpenJDK"
-move C:\OpenJDK\jdk-17* C:\OpenJDK\jdk-17
+move C:\OpenJDK\openlogic-openjdk-17* C:\OpenJDK\jdk-17
 del openjdk17.zip
 echo OpenJDK installation completed.
 
@@ -32,6 +32,7 @@ echo Gradle installation completed.
 REM Step 5: Download the repository from GitHub
 echo Cloning the repository...
 git clone https://github.com/jorimann/sogeti-automation-task
+echo repo installed
 
 REM Completion message
 echo Setup completed.
