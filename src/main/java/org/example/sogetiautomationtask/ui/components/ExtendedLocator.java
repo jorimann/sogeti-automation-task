@@ -2,7 +2,8 @@ package org.example.sogetiautomationtask.ui.components;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.options.WaitForSelectorState;
-import org.example.sogetiautomationtask.ui.utils.ConfigReader;
+
+import static org.example.sogetiautomationtask.config.ConfigurationManager.config;
 
 public class ExtendedLocator {
     Locator locator;
@@ -16,7 +17,7 @@ public class ExtendedLocator {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        locator.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(ConfigReader.getInt("ui.wait.element")));
+        locator.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(config().waitElement()));
         return locator;
     }
 }

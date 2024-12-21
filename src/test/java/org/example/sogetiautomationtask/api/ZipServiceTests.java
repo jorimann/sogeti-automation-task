@@ -6,6 +6,7 @@ import org.example.sogetiautomationtask.api.clients.BaseApiClient;
 import org.example.sogetiautomationtask.api.models.City;
 import org.example.sogetiautomationtask.api.models.Place;
 import org.example.sogetiautomationtask.api.models.ZipInfo;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

@@ -3,7 +3,7 @@ package org.example.sogetiautomationtask.ui.utils;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType.LaunchOptions;
 import com.microsoft.playwright.Playwright;
-
+import static org.example.sogetiautomationtask.config.ConfigurationManager.config;
 public enum BrowserFactory {
 
     CHROMIUM {
@@ -27,8 +27,8 @@ public enum BrowserFactory {
 
     public LaunchOptions options() {
         return new LaunchOptions()
-                .setHeadless(ConfigReader.getBoolean("ui.headless"))
-                .setSlowMo(ConfigReader.getInt("ui.slow.motion"));
+                .setHeadless(config().headless())
+                .setSlowMo(config().slowMotion());
 //                .setArgs(Arrays.stream(new String[] { "--start-maximized" }).toList());
     }
 

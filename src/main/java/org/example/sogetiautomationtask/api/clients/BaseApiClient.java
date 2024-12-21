@@ -3,11 +3,11 @@ package org.example.sogetiautomationtask.api.clients;
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.example.sogetiautomationtask.ui.utils.ConfigReader;
+import org.example.sogetiautomationtask.config.ConfigurationManager;
 
 public class BaseApiClient {
     public BaseApiClient() {
-        RestAssured.baseURI = ConfigReader.get("api.baseUrl");
+        RestAssured.baseURI = ConfigurationManager.config().apiBaseUrl();
         RestAssured.requestSpecification = RestAssured.given()
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json");

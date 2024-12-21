@@ -2,11 +2,11 @@ package org.example.sogetiautomationtask.ui;
 
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.Cookie;
+import static org.example.sogetiautomationtask.config.ConfigurationManager.config;
 import org.example.sogetiautomationtask.ui.components.PageUtils;
 import org.example.sogetiautomationtask.ui.pages.HomePage;
 import org.example.sogetiautomationtask.ui.utils.AllureAttachments;
 import org.example.sogetiautomationtask.ui.utils.BrowserManager;
-import org.example.sogetiautomationtask.ui.utils.ConfigReader;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,14 +47,15 @@ public abstract class BaseTest {
     @BeforeEach
     void setupContextAndNavigateToHomePage() {
         Browser.NewContextOptions options = new Browser.NewContextOptions()
-                .setViewportSize(ConfigReader.getInt("ui.viewport.width"), ConfigReader.getInt("ui.viewport.height"))
-                .setDeviceScaleFactor(1);
+                .setViewportSize(config().viewportWidth(),
+                        config().viewportHeight())
+                .setDeviceScaleFactor(config().deviceScaleFactor());
 
         context = browser.newContext(options);
 
-        context.setDefaultTimeout(ConfigReader.getInt("ui.timeout"));
+        context.setDefaultTimeout(config().timeout());
 
-        if (ConfigReader.getBoolean("ui.tracing.enabled")) {
+        if (config().tracingEnabled()) {
             context.tracing().start(new Tracing.StartOptions()
                     .setScreenshots(true)
                     .setSnapshots(true));
@@ -63,7 +64,7 @@ public abstract class BaseTest {
         setupCookie();
         page = context.newPage();
 
-        page.navigate(ConfigReader.get("ui.baseurl"));
+        page.navigate(config().uiBaseUrl());
         PageUtils.waitForPageLoad(page);
 
         homePage = new HomePage(page);
@@ -72,9 +73,9 @@ public abstract class BaseTest {
     @AfterEach
     void closeContext() {
 
-        if (ConfigReader.getBoolean("ui.tracing.enabled")) {
+        if (config().tracingEnabled()) {
             context.tracing().stop(new Tracing.StopOptions()
-                    .setPath(Paths.get("trace2.zip")));
+                    .setPath(Paths.get("trace.zip")));
         }
 
         if (page != null) {

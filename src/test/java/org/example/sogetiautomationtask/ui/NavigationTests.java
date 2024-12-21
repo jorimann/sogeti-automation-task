@@ -5,13 +5,15 @@ import org.example.sogetiautomationtask.ui.pages.ContactUsPage;
 import org.example.sogetiautomationtask.ui.pages.QualityEngineeringPage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NavigationTests extends BaseTest {
     private static final String CSV_PATH = "/sites.csv";
     private static final String EXPECTED_MESSAGE_AFTER_SUBMISSION = "Thank you! We have received your information successfully and will review it shortly.";
@@ -74,6 +76,6 @@ public class NavigationTests extends BaseTest {
     void tc3ShouldCountrySpecificSitesAvailable(String country, String url) {
         homePage.getMenu().goToSubsidiarySite(country);
         homePage.waitForUrl(url);
-        assertEquals(url, homePage.getUrl(), String.format("Expected to navigate to '%s', but landed on '%s'.", url, homePage.getUrl()));
+        assertThat(homePage.getPage()).hasURL(url);
     }
 }

@@ -4,7 +4,8 @@ import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 import org.example.sogetiautomationtask.ui.components.MenuDesktopComponent;
 import org.example.sogetiautomationtask.ui.components.SubNavigationComponent;
-import org.example.sogetiautomationtask.ui.utils.ConfigReader;
+
+import static org.example.sogetiautomationtask.config.ConfigurationManager.config;
 
 public class BasePage {
 
@@ -40,6 +41,10 @@ public class BasePage {
 
     @Step
     public void waitForUrl(String expectedUrl) {
-        page.waitForURL(url -> url.equals(expectedUrl), new Page.WaitForURLOptions().setTimeout(ConfigReader.getInt("ui.wait.for.new.page")));
+        page.waitForURL(url -> url.equals(expectedUrl), new Page.WaitForURLOptions().setTimeout(config().waitForNewPage()));
+    }
+
+    public Page getPage(){
+        return this.page;
     }
 }

@@ -51,6 +51,7 @@ task installPlaywrightDeps(type: JavaExec) {
 }
 
 test {
+    systemProperties(System.getProperties())
     useJUnitPlatform()
 }
 
