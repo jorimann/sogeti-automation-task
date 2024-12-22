@@ -26,8 +26,8 @@ task installBrowsers(type: Exec) {
 dependencies {
     implementation('com.microsoft.playwright:playwright:1.49.0')
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:${junitVersion}")
+    implementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+    implementation("org.junit.jupiter:junit-jupiter-params:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 
 
@@ -41,7 +41,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
 
     implementation 'org.slf4j:slf4j-api:2.0.16'
-    implementation 'ch.qos.logback:logback-classic:1.4.11'
+    implementation 'ch.qos.logback:logback-classic:1.5.15'
 }
 
 task installPlaywrightDeps(type: JavaExec) {
