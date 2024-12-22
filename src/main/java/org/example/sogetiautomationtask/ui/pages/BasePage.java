@@ -2,37 +2,26 @@ package org.example.sogetiautomationtask.ui.pages;
 
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
-import org.example.sogetiautomationtask.ui.components.MenuDesktopComponent;
-import org.example.sogetiautomationtask.ui.components.SubNavigationComponent;
 
 import static org.example.sogetiautomationtask.config.ConfigurationManager.config;
 
-public class BasePage {
-
-    private final MenuDesktopComponent menu;
-    private final SubNavigationComponent subNavigation;
+public abstract class BasePage {
     protected Page page;
 
-    public BasePage(Page page) {
+    public void setAndConfigurePage(final Page page){
         this.page = page;
-        this.menu = new MenuDesktopComponent(page);
-        this.subNavigation = new SubNavigationComponent(page);
     }
 
+    public void initComponents(){
+    }
+
+    @Step
     public String getTextFromBannerTag() {
         return page.locator(".banner-tag").innerText();
     }
 
     public String getUrl() {
         return page.url();
-    }
-
-    public MenuDesktopComponent getMenu() {
-        return menu;
-    }
-
-    public SubNavigationComponent getSubNavigation() {
-        return subNavigation;
     }
 
     public String getTitle() {

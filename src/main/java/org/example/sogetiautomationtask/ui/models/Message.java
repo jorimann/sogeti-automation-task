@@ -1,8 +1,8 @@
 package org.example.sogetiautomationtask.ui.models;
 
-import org.example.sogetiautomationtask.ui.utils.Country;
-import org.example.sogetiautomationtask.ui.utils.PositionLevel;
-import org.example.sogetiautomationtask.ui.utils.PurposeOfContact;
+import org.example.sogetiautomationtask.ui.enums.Country;
+import org.example.sogetiautomationtask.ui.enums.PositionLevel;
+import org.example.sogetiautomationtask.ui.enums.PurposeOfContact;
 
 public record Message(PurposeOfContact purposeOfContact,
                       String otherPurposeOfContact,

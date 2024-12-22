@@ -5,20 +5,19 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import org.example.sogetiautomationtask.ui.pages.*;
+import org.example.sogetiautomationtask.ui.factory.PageFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MenuDesktopComponent {
+public class MenuDesktopComponent extends BaseComponent {
     private static final Logger LOGGER = LoggerFactory.getLogger(MenuDesktopComponent.class);
-
-    private final Page page;
 
     private final Locator servicesMenuItem;
     private final Locator qualityEngineeringMenuItem;
     private final Locator automationMenuItem;
 
     public MenuDesktopComponent(Page page) {
-        this.page = page;
+        super(page);
         servicesMenuItem = page.getByLabel("Services menu", new Page.GetByLabelOptions().setExact(true));
         qualityEngineeringMenuItem = page.getByLabel("Quality Engineering menu", new Page.GetByLabelOptions().setExact(true));
         automationMenuItem = page.getByLabel("Automation menu", new Page.GetByLabelOptions().setExact(true));
@@ -29,7 +28,7 @@ public class MenuDesktopComponent {
         hoverServiceMenuItem();
         qualityEngineeringMenuItem.click();
         PageUtils.waitForPageLoad(page);
-        return new QualityEngineeringPage(page);
+        return PageFactory.createInstance(page, QualityEngineeringPage.class);
     }
 
     @Step
@@ -48,7 +47,7 @@ public class MenuDesktopComponent {
         hoverServiceMenuItem();
         automationMenuItem.click();
         PageUtils.waitForPageLoad(page);
-        return new AutomationPage(page);
+        return PageFactory.createInstance(page, AutomationPage.class);
     }
 
     @Step
@@ -56,13 +55,13 @@ public class MenuDesktopComponent {
         Locator contactUs = page.locator("nav.header-nav ul li.icon-investors a[href=\"/contact-us/\"]");
         contactUs.click();
         PageUtils.waitForPageLoad(page);
-        return new ContactUsPage(page);
+        return PageFactory.createInstance(page, ContactUsPage.class);
     }
 
     @Step
     public BasePage openGlobalMenu() {
         new ExtendedLocator(page.getByLabel("World Icon")).waitForElement().click();
-        return new HomePage(page);
+        return PageFactory.createInstance(page, HomePage.class);
     }
 
     @Step
@@ -71,7 +70,7 @@ public class MenuDesktopComponent {
         new ExtendedLocator(page.getByRole(AriaRole.NAVIGATION, new Page.GetByRoleOptions().setName("Location Search")).getByText(value))
                 .waitForElement().click();
         page.waitForLoadState();
-        return new HomePage(page);
+        return PageFactory.createInstance(page, HomePage.class);
     }
 
     @Step

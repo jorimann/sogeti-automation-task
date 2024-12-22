@@ -9,6 +9,7 @@ import org.example.sogetiautomationtask.reporting.TestListener;
 import org.example.sogetiautomationtask.ui.components.PageUtils;
 import org.example.sogetiautomationtask.ui.pages.HomePage;
 import org.example.sogetiautomationtask.ui.utils.BrowserManager;
+import org.example.sogetiautomationtask.ui.factory.PageFactory;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.Logger;
@@ -45,13 +46,6 @@ public abstract class BaseTest {
         if (playwright != null) playwright.close();
     }
 
-    //'Accept All' cookie
-    private void setupCookie() {
-        String cookieValue = "{\"stamp\":\"cEEox2rhRKOB3DaFVTvYLl6A1DXNuIItcHsEdXJNdkqSZ32woN8kww==\",\"necessary\":true,\"preferences\":false,\"statistics\":false,\"marketing\":false,\"method\":\"explicit\",\"ver\":1,\"utc\":1733677145386,\"region\":\"de\"}";
-        long expiryTime = System.currentTimeMillis() / 1000 + 3600;
-        context.addCookies(Collections.singletonList(new Cookie("CookieConsent", cookieValue).setDomain("www.sogeti.com").setPath("/").setExpires(expiryTime)));
-    }
-
     @BeforeEach
     void setupContextAndNavigateToHomePage() {
         Browser.NewContextOptions options = new Browser.NewContextOptions()
@@ -60,7 +54,6 @@ public abstract class BaseTest {
                 .setDeviceScaleFactor(config().deviceScaleFactor());
 
         context = browser.newContext(options);
-
         context.setDefaultTimeout(config().timeout());
 
         if (config().tracingEnabled()) {
@@ -75,7 +68,7 @@ public abstract class BaseTest {
         page.navigate(config().uiBaseUrl());
         PageUtils.waitForPageLoad(page);
 
-        homePage = new HomePage(page);
+        homePage = PageFactory.createInstance(page, HomePage.class);
         listener.setPage(page);
     }
 
@@ -98,5 +91,12 @@ public abstract class BaseTest {
                 page.screenshot(new Page.ScreenshotOptions()
                         .setFullPage(true)
                         .setType(ScreenshotType.PNG)));
+    }
+
+    //'Accept All' cookie
+    private void setupCookie() {
+        String cookieValue = "{\"stamp\":\"cEEox2rhRKOB3DaFVTvYLl6A1DXNuIItcHsEdXJNdkqSZ32woN8kww==\",\"necessary\":true,\"preferences\":false,\"statistics\":false,\"marketing\":false,\"method\":\"explicit\",\"ver\":1,\"utc\":1733677145386,\"region\":\"de\"}";
+        long expiryTime = System.currentTimeMillis() / 1000 + 3600;
+        context.addCookies(Collections.singletonList(new Cookie("CookieConsent", cookieValue).setDomain("www.sogeti.com").setPath("/").setExpires(expiryTime)));
     }
 }

@@ -2,6 +2,8 @@ package org.example.sogetiautomationtask.ui.utils;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.Playwright;
+import org.example.sogetiautomationtask.ui.factory.BrowserFactory;
+
 import static org.example.sogetiautomationtask.config.ConfigurationManager.config;
 
 public class BrowserManager {

@@ -1,7 +1,10 @@
-package org.example.sogetiautomationtask.ui.utils;
+package org.example.sogetiautomationtask.ui.factory;
 
 import com.github.javafaker.Faker;
 import org.example.sogetiautomationtask.ui.models.Message;
+import org.example.sogetiautomationtask.ui.enums.Country;
+import org.example.sogetiautomationtask.ui.enums.PositionLevel;
+import org.example.sogetiautomationtask.ui.enums.PurposeOfContact;
 
 import java.util.Locale;
 import java.util.Random;

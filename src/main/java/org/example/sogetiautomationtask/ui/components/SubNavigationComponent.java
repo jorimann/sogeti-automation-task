@@ -2,12 +2,10 @@ package org.example.sogetiautomationtask.ui.components;
 
 import com.microsoft.playwright.Page;
 
-public class SubNavigationComponent {
-
-    private final Page page;
+public class SubNavigationComponent extends BaseComponent {
 
     public SubNavigationComponent(Page page) {
-        this.page = page;
+        super(page);
     }
 
     public String getSubNavigationText() {

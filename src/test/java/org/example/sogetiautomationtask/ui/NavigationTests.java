@@ -23,12 +23,12 @@ public class NavigationTests extends BaseTest {
     @Test
     @DisplayName("[Expected to fail] Verify Automation link should be available as submenu item of Service header menu")
     void tc1ShouldAutomationLinkAvailableFromServiceHeaderMenu() {
-        AutomationPage automationPage = homePage.getMenu().goToAutomationMenuItem();
+        AutomationPage automationPage = homePage.goToAutomationMenuItem();
 
         assertEquals(EXPECTED_AUTOMATION_BANNER_TEXT, automationPage.getTextFromBannerTag(),
                 "Automation text is not present on Banner");
 
-        assertTrue(automationPage.getSubNavigation().getSubNavigationText().contains(EXPECTED_AUTOMATION_BANNER_TEXT),
+        assertTrue(automationPage.getSubNavigationText().contains(EXPECTED_AUTOMATION_BANNER_TEXT),
                 "Sub-navigation does not contain Automation item");
     }
 
@@ -38,34 +38,34 @@ public class NavigationTests extends BaseTest {
         //my assumption that selected menu item has active attribute in class name
         String SUPPOSED_ACTIVE_ATTRIBUTE = "active";
 
-        QualityEngineeringPage qualityEngineeringPage = homePage.getMenu().goToQualityEngineeringPage();
+        QualityEngineeringPage qualityEngineeringPage = homePage.goToQualityEngineeringPage();
 
         assertEquals(EXPECTED_QUALITY_ENGINEERING_BANNER_TEXT, qualityEngineeringPage.getTextFromBannerTag(),
                 "Automation text is not present on Banner");
-        assertTrue(qualityEngineeringPage.getSubNavigation().getSubNavigationText().contains(EXPECTED_QUALITY_ENGINEERING_BANNER_TEXT),
+        assertTrue(qualityEngineeringPage.getSubNavigationText().contains(EXPECTED_QUALITY_ENGINEERING_BANNER_TEXT),
                 "Subnavigation does not contain Quality Engineering item");
 
-        qualityEngineeringPage.getMenu().hoverServiceMenuItem();
+        qualityEngineeringPage.hoverServiceMenuItem();
 
-        assertTrue(qualityEngineeringPage.getMenu().getClassServiceMenu().contains(SUPPOSED_ACTIVE_ATTRIBUTE),
+        assertTrue(qualityEngineeringPage.getClassServiceMenu().contains(SUPPOSED_ACTIVE_ATTRIBUTE),
                 "Service menu item is not active");
-        assertTrue(qualityEngineeringPage.getMenu().getClassQualityEngineeringMenu().contains(SUPPOSED_ACTIVE_ATTRIBUTE),
+        assertTrue(qualityEngineeringPage.getClassQualityEngineeringMenu().contains(SUPPOSED_ACTIVE_ATTRIBUTE),
                 "Quality Engineering Menu Item is not active");
     }
 
     @Test
     @DisplayName("[Expected to fail] Verify User can send Message from Automation Page")
     void tc2ShouldSendMessageViaContactUsFormFromAutomationPage() {
-        homePage.getMenu().goToAutomationMenuItem();
+        homePage.goToAutomationMenuItem();
     }
 
     @Test
     @DisplayName("Verify User can send Message from Contact Us page")
     void tc2bShouldSendMessageViaContactUsFormFromAutomationPage() {
-        ContactUsPage contactUsPage = homePage.getMenu().goToContactUs();
+        ContactUsPage contactUsPage = homePage.goToContactUs();
         contactUsPage.populateMessageData();
         contactUsPage.confirmCollectingData();
-        contactUsPage.sendMessage();
+//        contactUsPage.sendMessage();
         assertTrue(contactUsPage.getMessageAfterSending().contains(EXPECTED_MESSAGE_AFTER_SUBMISSION),
                 "Page does not contain expected text after sending message");
     }
@@ -74,7 +74,7 @@ public class NavigationTests extends BaseTest {
     @CsvFileSource(resources = CSV_PATH, numLinesToSkip = 1)
     @DisplayName("Verify User can navigate to Country-specific site")
     void tc3ShouldCountrySpecificSitesAvailable(String country, String url) {
-        homePage.getMenu().goToSubsidiarySite(country);
+        homePage.goToSubsidiarySite(country);
         homePage.waitForUrl(url);
         assertThat(homePage.getPage()).hasURL(url);
     }

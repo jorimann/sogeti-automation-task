@@ -6,14 +6,10 @@ import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import org.example.sogetiautomationtask.ui.components.ExtendedLocator;
 import org.example.sogetiautomationtask.ui.models.Message;
-import org.example.sogetiautomationtask.ui.utils.MessageFactory;
-import org.example.sogetiautomationtask.ui.utils.PurposeOfContact;
+import org.example.sogetiautomationtask.ui.factory.MessageFactory;
+import org.example.sogetiautomationtask.ui.enums.PurposeOfContact;
 
 public class ContactUsPage extends BasePage {
-
-    public ContactUsPage(Page page) {
-        super(page);
-    }
 
     @Step
     public ContactUsPage populateMessageData() {

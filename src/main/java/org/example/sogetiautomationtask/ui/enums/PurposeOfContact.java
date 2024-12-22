@@ -1,4 +1,4 @@
-package org.example.sogetiautomationtask.ui.utils;
+package org.example.sogetiautomationtask.ui.enums;
 
 public enum PurposeOfContact {
     PRIVACY("Privacy"),

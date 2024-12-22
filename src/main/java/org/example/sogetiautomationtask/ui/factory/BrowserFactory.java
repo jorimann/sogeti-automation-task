@@ -1,4 +1,4 @@
-package org.example.sogetiautomationtask.ui.utils;
+package org.example.sogetiautomationtask.ui.factory;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType.LaunchOptions;
