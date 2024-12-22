@@ -2,10 +2,10 @@ package org.example.sogetiautomationtask.ui;
 
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.Cookie;
-import static org.example.sogetiautomationtask.config.ConfigurationManager.config;
+import io.qameta.allure.Attachment;
+import org.example.sogetiautomationtask.reporting.AllureReporterManagement;
 import org.example.sogetiautomationtask.ui.components.PageUtils;
 import org.example.sogetiautomationtask.ui.pages.HomePage;
-import org.example.sogetiautomationtask.ui.utils.AllureAttachments;
 import org.example.sogetiautomationtask.ui.utils.BrowserManager;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
@@ -14,10 +14,12 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Paths;
 import java.util.Collections;
 
+import static org.example.sogetiautomationtask.config.ConfigurationManager.config;
+
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class BaseTest {
-    private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseTest.class);
 
     protected static Playwright playwright;
     protected static Browser browser;
@@ -29,6 +31,7 @@ public abstract class BaseTest {
     public static void createPlaywrightAndBrowserInstancesAndSetupAllureEnvironment() {
         playwright = Playwright.create();
         browser = BrowserManager.getBrowser(playwright);
+        AllureReporterManagement.storeAllureEnvironmentConfigurations();
     }
 
     @AfterAll
@@ -72,17 +75,19 @@ public abstract class BaseTest {
 
     @AfterEach
     void closeContext() {
-
         if (config().tracingEnabled()) {
             context.tracing().stop(new Tracing.StopOptions()
                     .setPath(Paths.get("trace.zip")));
         }
 
         if (page != null) {
-            byte[] screenshot = page.screenshot(new Page.ScreenshotOptions().setFullPage(true));
-            AllureAttachments.saveScreenshot(screenshot);
+            AllureReporterManagement.saveScreenshot(takeScreenshot());
             page.close();
         }
         if (context != null) context.close();
+    }
+
+    public byte[] takeScreenshot() {
+        return page.screenshot(new Page.ScreenshotOptions().setFullPage(true));
     }
 }

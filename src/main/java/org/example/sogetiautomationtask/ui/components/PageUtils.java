@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import static org.example.sogetiautomationtask.config.ConfigurationManager.config;
 
 public class PageUtils {
-    private static final Logger logger = LoggerFactory.getLogger(PageUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PageUtils.class);
 
     public static void waitForPageLoad(Page page) {
         try {
@@ -16,7 +16,7 @@ public class PageUtils {
                     new Page.WaitForLoadStateOptions()
                             .setTimeout(config().timeoutPageLoad()));
         } catch (TimeoutError error) {
-            logger.warn("page load was not completed in defined timeout, but script attempts to run further", error.getMessage());
+            LOGGER.warn("page load was not completed in defined timeout, but script attempts to run further", error.getMessage());
         }
     }
 }

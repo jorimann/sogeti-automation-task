@@ -1,15 +1,15 @@
 package org.example.sogetiautomationtask.config;
 
 import org.aeonbits.owner.ConfigCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 
 public class ConfigurationManager {
-    private static final Logger logger = Logger.getLogger(ConfigurationManager.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationManager.class);
+
 
     private ConfigurationManager (){};
 
@@ -28,7 +28,7 @@ public class ConfigurationManager {
             configFileProperties.load(ClassLoader.getSystemClassLoader()
                         .getResourceAsStream(fileName));
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Failed to load configuration file", e);
+            LOGGER.error("Failed to load configuration file", e);
         }
 
         configFileProperties.putAll(systemProperties);

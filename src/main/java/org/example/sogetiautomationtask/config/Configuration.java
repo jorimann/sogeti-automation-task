@@ -3,7 +3,7 @@ package org.example.sogetiautomationtask.config;
 import org.aeonbits.owner.Config;
 
 @Config.LoadPolicy(Config.LoadType.MERGE)
-@Config.Sources({"system:properties","classpath:config-default.properties"})
+@Config.Sources({"system:properties","classpath:config-default.properties", "classpath:allure.properties"})
 public interface Configuration extends Config {
 
     @Key("ui.baseurl")
@@ -45,4 +45,7 @@ public interface Configuration extends Config {
 
     @Key("api.baseUrl")
     String apiBaseUrl();
+
+    @Key("allure.results.directory")
+    String allureResultsDirectory();
 }

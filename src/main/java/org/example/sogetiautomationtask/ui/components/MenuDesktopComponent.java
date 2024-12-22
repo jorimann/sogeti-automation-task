@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MenuDesktopComponent {
-    private static final Logger logger = LoggerFactory.getLogger(MenuDesktopComponent.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MenuDesktopComponent.class);
 
     private final Page page;
 
