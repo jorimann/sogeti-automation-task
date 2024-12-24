@@ -15,8 +15,7 @@ ext {
     junitVersion = '5.11.3'
 }
 
-sourceCompatibility = '17'
-targetCompatibility = '17'
+
 
 task installBrowsers(type: Exec) {
     description = 'Install Playwright supported browsers'
@@ -48,6 +47,29 @@ task installPlaywrightDeps(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'com.microsoft.playwright.CLI'
     args = ['install-deps']
+}
+
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+compileTestJava {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+task printCompileJavaVersion {
+    doLast {
+        println "Java version for compilation: ${JavaVersion.current()}"
+        println "Java home: ${System.getProperty('java.home')}"
+    }
+}
+
+task printJavaHome {
+    doLast {
+        println "JAVA_HOME: ${System.getenv("JAVA_HOME")}"
+    }
 }
 
 test {

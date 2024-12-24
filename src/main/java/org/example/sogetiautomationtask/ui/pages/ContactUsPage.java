@@ -2,21 +2,64 @@ package org.example.sogetiautomationtask.ui.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.PlaywrightException;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
-import org.example.sogetiautomationtask.ui.components.ExtendedLocator;
+import org.example.sogetiautomationtask.ui.components.MenuDesktopComponent;
 import org.example.sogetiautomationtask.ui.models.Message;
 import org.example.sogetiautomationtask.ui.factory.MessageFactory;
 import org.example.sogetiautomationtask.ui.enums.PurposeOfContact;
 
+import static org.example.sogetiautomationtask.config.ConfigurationManager.config;
+
 public class ContactUsPage extends BasePage {
+
+    private MenuDesktopComponent menu;
+
+    @Override
+    public void initComponents(){
+        menu = new MenuDesktopComponent(page);
+    }
+    @Override
+    public void waitForPageLoad() {
+        super.waitForPageLoad();
+        waitPageOperational();
+    }
+
+    private void waitPageOperational(){
+        int i = 0;
+        while (i++ < config().timeout() / 200) {
+            menu.hoverServiceMenuItem();
+
+            int j = 0;
+            while (!menu.isServicesSubMenuVisible() && j < 10) {
+                try {
+                    Thread.sleep(50);
+                    j++;
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (menu.isServicesSubMenuVisible()){
+                logo.hover();
+                return;
+            } else {
+                logo.hover();
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        throw new PlaywrightException("Services submenu is not visible after hovering Services menu item");
+    }
 
     @Step
     public ContactUsPage populateMessageData() {
         Message message = MessageFactory.getMessage();
 
-        new ExtendedLocator(page.getByLabel("Purpose of contact *"))
-                .waitForElement().selectOption(message.purposeOfContact().getName());
+        page.getByLabel("Purpose of contact *").selectOption(message.purposeOfContact().getName());
 
         if (message.purposeOfContact() == PurposeOfContact.OTHER_PURPOSE) {
             page.getByPlaceholder("Enter other Purpose of contact").fill(message.otherPurposeOfContact());
@@ -28,8 +71,7 @@ public class ContactUsPage extends BasePage {
         page.getByPlaceholder("E-mail address").fill(message.email());
         page.getByLabel("Country *").selectOption(message.country().getName());
         page.getByPlaceholder("Phone number").click();
-        new ExtendedLocator(page.getByPlaceholder("Phone number"))
-                .waitForElement().fill(message.phoneNumber());
+        page.getByPlaceholder("Phone number").fill(message.phoneNumber());
         page.getByPlaceholder("Company").fill(message.company());
         page.getByPlaceholder("Your Message").fill(message.message());
         return this;

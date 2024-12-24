@@ -6,7 +6,6 @@ import com.microsoft.playwright.options.ScreenshotType;
 import io.qameta.allure.Step;
 import org.example.sogetiautomationtask.reporting.AllureReporterManagement;
 import org.example.sogetiautomationtask.reporting.TestListener;
-import org.example.sogetiautomationtask.ui.components.PageUtils;
 import org.example.sogetiautomationtask.ui.pages.HomePage;
 import org.example.sogetiautomationtask.ui.utils.BrowserManager;
 import org.example.sogetiautomationtask.ui.factory.PageFactory;
@@ -66,7 +65,6 @@ public abstract class BaseTest {
         page = context.newPage();
 
         page.navigate(config().uiBaseUrl());
-        PageUtils.waitForPageLoad(page);
 
         homePage = PageFactory.createInstance(page, HomePage.class);
         listener.setPage(page);

@@ -1,8 +1,10 @@
 package org.example.sogetiautomationtask.ui;
 
+import com.microsoft.playwright.assertions.PageAssertions;
 import org.example.sogetiautomationtask.ui.pages.AutomationPage;
 import org.example.sogetiautomationtask.ui.pages.ContactUsPage;
 import org.example.sogetiautomationtask.ui.pages.QualityEngineeringPage;
+import org.example.sogetiautomationtask.ui.pages.SubsidiaryPage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -10,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.example.sogetiautomationtask.config.ConfigurationManager.config;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -65,17 +68,18 @@ public class NavigationTests extends BaseTest {
         ContactUsPage contactUsPage = homePage.goToContactUs();
         contactUsPage.populateMessageData();
         contactUsPage.confirmCollectingData();
-//        contactUsPage.sendMessage();
+        contactUsPage.sendMessage();
         assertTrue(contactUsPage.getMessageAfterSending().contains(EXPECTED_MESSAGE_AFTER_SUBMISSION),
                 "Page does not contain expected text after sending message");
+
     }
 
     @ParameterizedTest
     @CsvFileSource(resources = CSV_PATH, numLinesToSkip = 1)
     @DisplayName("Verify User can navigate to Country-specific site")
     void tc3ShouldCountrySpecificSitesAvailable(String country, String url) {
-        homePage.goToSubsidiarySite(country);
-        homePage.waitForUrl(url);
-        assertThat(homePage.getPage()).hasURL(url);
+        SubsidiaryPage subsidiaryPage = homePage.goToSubsidiarySite(country);
+        assertThat(subsidiaryPage.getPage()).hasURL(url,
+                new PageAssertions.HasURLOptions().setTimeout(config().waitForNewPage()));
     }
 }
