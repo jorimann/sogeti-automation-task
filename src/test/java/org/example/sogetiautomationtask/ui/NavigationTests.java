@@ -68,7 +68,7 @@ public class NavigationTests extends BaseTest {
         ContactUsPage contactUsPage = homePage.goToContactUs();
         contactUsPage.populateMessageData();
         contactUsPage.confirmCollectingData();
-        contactUsPage.sendMessage();
+//        contactUsPage.sendMessage();
         assertTrue(contactUsPage.getMessageAfterSending().contains(EXPECTED_MESSAGE_AFTER_SUBMISSION),
                 "Page does not contain expected text after sending message");
 

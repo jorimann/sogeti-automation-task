@@ -23,36 +23,7 @@ public class ContactUsPage extends BasePage {
     @Override
     public void waitForPageLoad() {
         super.waitForPageLoad();
-        waitPageOperational();
-    }
-
-    private void waitPageOperational(){
-        int i = 0;
-        while (i++ < config().timeout() / 200) {
-            menu.hoverServiceMenuItem();
-
-            int j = 0;
-            while (!menu.isServicesSubMenuVisible() && j < 10) {
-                try {
-                    Thread.sleep(50);
-                    j++;
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (menu.isServicesSubMenuVisible()){
-                logo.hover();
-                return;
-            } else {
-                logo.hover();
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-        throw new PlaywrightException("Services submenu is not visible after hovering Services menu item");
+        super.waitPageOperational();
     }
 
     @Step

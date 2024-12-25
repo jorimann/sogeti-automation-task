@@ -45,3 +45,8 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+agent.jar
+dockerfile
+trace.zip
+docker-compose.yml
