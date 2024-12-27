@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'io.qameta.allure' version '2.12.0'
-    id("io.freefair.lombok") version "8.11"
+    id 'io.freefair.lombok' version '8.11'
 }
 
 group 'org.example'
@@ -15,35 +15,40 @@ ext {
     junitVersion = '5.11.3'
 }
 
-
-
-task installBrowsers(type: Exec) {
-    description = 'Install Playwright supported browsers'
-    commandLine 'npx', 'playwright', 'install'
+allure {
+    version = '2.32.0'
 }
 
 dependencies {
     implementation('com.microsoft.playwright:playwright:1.49.0')
 
-    implementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
-    implementation("org.junit.jupiter:junit-jupiter-params:${junitVersion}")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
-
+    implementation platform("org.junit:junit-bom:5.11.4")
+    implementation 'org.junit.jupiter:junit-jupiter-api'
+    implementation 'org.junit.jupiter:junit-jupiter-params'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     implementation 'org.aeonbits.owner:owner:1.0.12'
     implementation 'com.github.javafaker:javafaker:1.0.2'
 
-    implementation 'io.qameta.allure:allure-junit5:2.29.1'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.11.3'
-
     implementation 'io.rest-assured:rest-assured:5.5.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+
+    implementation platform("io.qameta.allure:allure-bom:2.29.1")
+    implementation 'io.qameta.allure:allure-junit5'
+    implementation 'io.qameta.allure:allure-rest-assured'
 
     implementation 'org.slf4j:slf4j-api:2.0.16'
     implementation 'ch.qos.logback:logback-classic:1.5.15'
 }
 
-task installPlaywrightDeps(type: JavaExec) {
+test {
+    systemProperties(System.getProperties())
+    useJUnitPlatform()
+    ignoreFailures = true
+}
+
+tasks.register('installPlaywrightDeps', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'com.microsoft.playwright.CLI'
     args = ['install-deps']
@@ -59,26 +64,15 @@ compileTestJava {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-task printCompileJavaVersion {
+tasks.register('printCompileJavaVersion') {
     doLast {
         println "Java version for compilation: ${JavaVersion.current()}"
         println "Java home: ${System.getProperty('java.home')}"
-    }
-}
-
-task printJavaHome {
-    doLast {
         println "JAVA_HOME: ${System.getenv("JAVA_HOME")}"
     }
 }
 
-test {
-    systemProperties(System.getProperties())
-    useJUnitPlatform()
-    ignoreFailures = true
-}
-
-//task to genererate code
+//task to generate Playwright code
 tasks.register('playwrightcodegen', JavaExec) {
     classpath sourceSets.test.runtimeClasspath
     mainClass = 'com.microsoft.playwright.CLI'
@@ -93,15 +87,4 @@ tasks.register('playwrighttrace', JavaExec) {
     mainClass = 'com.microsoft.playwright.CLI'
     args 'show-trace'
     args 'trace.zip'
-}
-
-task printJavaVersion {
-    doLast {
-        println "Java version used by Gradle: ${System.getProperty('java.version')}"
-        println "Java home: ${System.getProperty('java.home')}"
-    }
-}
-
-allure {
-    version = '2.32.0'
 }

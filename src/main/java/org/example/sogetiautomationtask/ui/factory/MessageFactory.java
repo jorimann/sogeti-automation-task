@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class MessageFactory {
     public static Message getMessage() {
-        Faker faker = new Faker(new Locale("en", "US"));
+        Faker faker = new Faker(Locale.forLanguageTag("en-US"));
         String email = faker.bothify("????##@gmail.com");
         return new Message(getRandomEnum(PurposeOfContact.class),
                 "automation test execution",

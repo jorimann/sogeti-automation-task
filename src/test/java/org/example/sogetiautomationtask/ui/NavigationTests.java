@@ -5,6 +5,7 @@ import org.example.sogetiautomationtask.ui.pages.AutomationPage;
 import org.example.sogetiautomationtask.ui.pages.ContactUsPage;
 import org.example.sogetiautomationtask.ui.pages.QualityEngineeringPage;
 import org.example.sogetiautomationtask.ui.pages.SubsidiaryPage;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -68,10 +69,9 @@ public class NavigationTests extends BaseTest {
         ContactUsPage contactUsPage = homePage.goToContactUs();
         contactUsPage.populateMessageData();
         contactUsPage.confirmCollectingData();
-//        contactUsPage.sendMessage();
+        contactUsPage.sendMessage();
         assertTrue(contactUsPage.getMessageAfterSending().contains(EXPECTED_MESSAGE_AFTER_SUBMISSION),
                 "Page does not contain expected text after sending message");
-
     }
 
     @ParameterizedTest

@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class City {
+public class CityZips {
     @JsonProperty("country abbreviation")
     private String countryAbbreviation;
 
